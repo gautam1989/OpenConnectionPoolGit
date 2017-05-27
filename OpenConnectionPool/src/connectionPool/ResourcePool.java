@@ -35,7 +35,7 @@ public class ResourcePool implements ResourceConnPool<Connection> {
 			return 0;
 	}
 
-	public Connection getResource(long maxWaitMillis)
+	public Connection getResource()
 			throws  ResourceCreationException {
 
 		// First, acquire the permission to take or create a resource
@@ -90,6 +90,6 @@ public class ResourcePool implements ResourceConnPool<Connection> {
 
 	@Override
 	public Connection getConnection() throws  ResourceCreationException {
-		return getResource(1000);
+		return getResource();
 	}
 }
