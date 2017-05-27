@@ -28,7 +28,12 @@ public class ResourcePool implements ResourceConnPool<Connection> {
 	}
 
 
-
+	public int getValidPoolSize(){
+		if( null != resources && resources.size() >=0)
+			return resources.size();
+		else
+			return 0;
+	}
 
 	public Connection getResource(long maxWaitMillis)
 			throws  ResourceCreationException {
@@ -49,6 +54,9 @@ public class ResourcePool implements ResourceConnPool<Connection> {
 				if(!res.isClosed() && res.isValid(5000)){
 					System.out.println("Acquiring from pool");
 					return res;
+				}else{
+					//creating a new resource as the one just pooled is not valid now 
+					return createResource();
 				}
 
 

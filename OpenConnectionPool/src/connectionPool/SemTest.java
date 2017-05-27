@@ -14,6 +14,7 @@ class SemT implements Runnable{
 	public void run() {
 		List<Connection> clist = new ArrayList<>();
 		for(int i=0;i<2;i++){
+			System.out.println("Pool Size: "+conn.getValidPoolSize());
 			try {
 				Connection con = conn.getConnection();
 				clist.add(con);
@@ -31,6 +32,7 @@ class SemT implements Runnable{
 		
 		for(int i=0;i<3;i++){
 			try {
+				System.out.println("Pool Size: "+conn.getValidPoolSize());
 				Connection con = conn.getConnection();
 				clist.add(con);
 			} catch (InterruptedException | ResourceCreationException e) {
