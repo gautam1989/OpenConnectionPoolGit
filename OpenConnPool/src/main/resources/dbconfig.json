@@ -5,7 +5,8 @@
 		"userName": "root",
 		"password": "root",
 		"jdbcURL": "jdbc:mysql://localhost:3306/poolingtestdb?useSSL=false",
-		"numberOfConnectionsPerExecutor": "2"
+		"numberOfConnectionsPerExecutor": "6",
+		"dynamicAllocateCount":"2"
 	}
 ]
 

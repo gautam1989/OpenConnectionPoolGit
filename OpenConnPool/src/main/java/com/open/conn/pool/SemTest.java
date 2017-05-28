@@ -2,6 +2,7 @@ package com.open.conn.pool;
 
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,8 @@ class SemT implements Runnable{
 	@Override
 	public void run() {
 		List<Connection> clist = new ArrayList<>();
-		for(int i=0;i<2;i++){
-			System.out.println("Pool Size: "+conn.getValidPoolSize());
+		for(int i=0;i<7;i++){
+		
 			try {
 				Connection con = conn.getConnection();
 				clist.add(con);
@@ -27,19 +28,34 @@ class SemT implements Runnable{
 		
 		System.out.println("Releasing Them Now");
 		
-		for(Connection c:clist)
-			conn.returnResource(c);
-		
-		
-		for(int i=0;i<3;i++){
+		for(Connection c:clist){
 			try {
-				System.out.println("Pool Size: "+conn.getValidPoolSize());
-				Connection con = conn.getConnection();
-				clist.add(con);
-			} catch (ResourceCreationException e) {
+				conn.returnResource(c);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+//		
+//		for(int i=0;i<3;i++){
+//			try {
+//				System.out.println("Pool Size: "+conn.getValidPoolSize());
+//				Connection con = conn.getConnection();
+//				clist.add(con);
+//			} catch (ResourceCreationException e) {
+//				e.printStackTrace();
+//			}
+//			}
+		
+		for(Connection c:clist){
+			try {
+				c.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			}
+		}
+		
 	}
 	
 }

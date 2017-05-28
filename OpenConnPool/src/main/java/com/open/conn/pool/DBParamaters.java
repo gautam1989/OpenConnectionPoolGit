@@ -7,6 +7,8 @@ public class DBParamaters {
 	String password;
 	String jdbcURL;
 	String numberOfConnectionsPerExecutor;
+	String maxNumberOfConnections;
+	String dynamicAllocateCount;
 	
 	@Override
 	public String toString() {

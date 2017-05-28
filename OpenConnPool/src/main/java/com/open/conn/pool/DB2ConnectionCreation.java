@@ -15,6 +15,8 @@ public class DB2ConnectionCreation extends ResourcePool {
 		if(db2ConnectionCreation == null){
 			db2ConnectionCreation = new DB2ConnectionCreation();
 			db2ConnectionCreation.sem = new Semaphore(Integer.parseInt(dbParameter.numberOfConnectionsPerExecutor));
+			db2ConnectionCreation.dynamicAllocateCount=Integer.parseInt(dbParameter.dynamicAllocateCount);
+			db2ConnectionCreation.numberOfConnectionsPerExecutor=Integer.parseInt(dbParameter.numberOfConnectionsPerExecutor);
 			dbParameters = dbParameter;
 		}
 		return db2ConnectionCreation;

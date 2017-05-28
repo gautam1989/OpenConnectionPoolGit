@@ -18,12 +18,13 @@ public interface ResourceConnPool<T extends Object> {
 	/*
 	 * Returns the resource back to the pool
 	 */
-	public void returnResource(T conn);
+	public void returnResource(T conn)throws SQLException;
 	
 	/*
 	 * Return the valid pool Size
 	 */
 	public int getValidPoolSize();
+
 
 	
 	

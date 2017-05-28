@@ -17,11 +17,11 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 
 	protected Semaphore sem ;
 	private final Queue<Connection> resources = new ConcurrentLinkedQueue<Connection>();
-	private  ResourcePool resourcePool;
+	protected  ResourcePool resourcePool;
+	protected int dynamicAllocateCount;
+	protected int numberOfConnectionsPerExecutor;
 
 
-	
-	
 	public ResourcePool() {
 		// TODO Auto-generated constructor stub
 	}
@@ -36,7 +36,10 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 
 	public Connection getResource()
 			throws  ResourceCreationException {
-
+		if(sem.availablePermits() >0 && resources.size() >= numberOfConnectionsPerExecutor ){
+		sem.drainPermits();
+		System.out.println("Draining the permits");
+		}
 		// First, acquire the permission to take or create a resource
 		try{
 			sem.acquire();
@@ -60,7 +63,7 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 
 
 			}
-			
+
 			//if connection not in pool then create one
 			return createResource();
 
@@ -71,15 +74,23 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 		}
 	}
 
-	public void returnResource(Connection res) {
+	public void returnResource(Connection res) throws SQLException {
+		
+		if(resources.size() < numberOfConnectionsPerExecutor -1 ){
+			resources.add(res);
+			resources.add(createResource());
+			System.out.println("Size of connectionList: "+resources.size());
+		}else{
+			
+			closeConnectionSafe(res);
+		}
 
-		resources.add(res);
 		sem.release();
-		System.out.println("Available Connection:"+sem.availablePermits());
+		System.out.println("Resources size:"+resources.size());
 	}
 
 
-	
+
 	public  abstract Connection createResource() throws SQLException;
 
 
@@ -87,5 +98,14 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 	@Override
 	public Connection getConnection() throws  ResourceCreationException {
 		return getResource();
+	}
+
+	private void closeConnectionSafe(Connection conn){
+		try{
+			conn.close();
+			System.out.println("Connection closed since its over the pool limit");
+		}catch(SQLException e){
+			System.out.println("Exception in closing connection");
+		}
 	}
 }
