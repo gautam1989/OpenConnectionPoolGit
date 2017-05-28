@@ -24,9 +24,8 @@ public class DB2ConnectionCreation extends ResourcePool {
 
 	@Override
 	public Connection createResource() throws SQLException {
-		System.out.println("createResource 2"+dbParameters.toString());
+		System.out.println("Creating a new Connection");
 		Connection conn = DriverManager.getConnection(dbParameters.jdbcURL, dbParameters.userName, dbParameters.password);
-		System.out.println("Creating Connection:"+super.sem.availablePermits());
 		return conn;
 	}
 	
