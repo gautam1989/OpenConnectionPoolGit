@@ -37,8 +37,8 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 	public Connection getResource()
 			throws  ResourceCreationException {
 		if(sem.availablePermits() >0 && resources.size() >= numberOfConnectionsPerExecutor ){
-		sem.drainPermits();
-		System.out.println("Draining the permits");
+			sem.drainPermits();
+			System.out.println("Draining the permits");
 		}
 		// First, acquire the permission to take or create a resource
 		try{
@@ -75,13 +75,18 @@ abstract class ResourcePool implements ResourceConnPool<Connection> {
 	}
 
 	public void returnResource(Connection res) throws SQLException {
-		
+		//Returning the resource back to the pool
 		if(resources.size() < numberOfConnectionsPerExecutor -1 ){
 			resources.add(res);
-			resources.add(createResource());
+			for(int i=0;i<dynamicAllocateCount;i++){
+				if(resources.size() < numberOfConnectionsPerExecutor)
+					resources.add(createResource());
+				else
+					closeConnectionSafe(res);                                                  //closing these connections since they are over our pool
+			}
 			System.out.println("Size of connectionList: "+resources.size());
 		}else{
-			
+
 			closeConnectionSafe(res);
 		}
 
