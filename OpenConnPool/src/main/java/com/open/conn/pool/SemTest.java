@@ -7,8 +7,8 @@ import java.util.List;
 
 
 class SemT implements Runnable{
-	ResourceConnPool<Connection> conn;
-	public SemT(ResourceConnPool<Connection> conn) {
+	DB2ConnectionCreation conn;
+	public SemT(DB2ConnectionCreation conn) {
 		this.conn = conn;
 	}
 	@Override
@@ -20,7 +20,7 @@ class SemT implements Runnable{
 				Connection con = conn.getConnection();
 				clist.add(con);
 
-			} catch (InterruptedException | ResourceCreationException e) {
+			} catch (ResourceCreationException e) {
 				e.printStackTrace();
 			}
 			}
@@ -36,7 +36,7 @@ class SemT implements Runnable{
 				System.out.println("Pool Size: "+conn.getValidPoolSize());
 				Connection con = conn.getConnection();
 				clist.add(con);
-			} catch (InterruptedException | ResourceCreationException e) {
+			} catch (ResourceCreationException e) {
 				e.printStackTrace();
 			}
 			}
@@ -52,13 +52,27 @@ public class SemTest {
 
 	public static void main(String[] args) throws InterruptedException, ResourceCreationException {
 
-			ResourceConnPool<Connection> conn = ResourcePool.getResourcePool();
+			ConnectionPoolFactory cpf = new ConnectionPoolFactory();
+			DBParamUtility DBp =new DBParamUtility();
 			
+			DB2ConnectionCreation conn = (DB2ConnectionCreation) cpf.getConnectionType("DB2",DBp.getDBParametersFromConfigFile().get(0));
+			validate(conn);
 			Thread t1 = new Thread(new SemT(conn));
 			t1.start();
 			
 			
 			
 	}	
+	
+	
+	
+	
+	private static void validate(ResourcePool conn){
+		if(null == conn)
+		{
+			System.out.println("This type of connection is yet not supported!!");
+			System.exit(1);
+		}
+	}
 
 }

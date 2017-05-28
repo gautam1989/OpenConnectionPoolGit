@@ -1,6 +1,7 @@
 package com.open.conn.pool;
 
-
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /*
  * interface which can be used for concrete
@@ -23,6 +24,7 @@ public interface ResourceConnPool<T extends Object> {
 	 * Return the valid pool Size
 	 */
 	public int getValidPoolSize();
+
 	
 	
 }

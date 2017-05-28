@@ -13,19 +13,17 @@ import java.util.concurrent.Semaphore;
  * also the access to the pool.
  * 
  */
-public class ResourcePool implements ResourceConnPool<Connection> {
+abstract class ResourcePool implements ResourceConnPool<Connection> {
 
-	private Semaphore sem = new Semaphore(2);
+	protected Semaphore sem ;
 	private final Queue<Connection> resources = new ConcurrentLinkedQueue<Connection>();
-	private static ResourcePool resourcePool;
+	private  ResourcePool resourcePool;
 
-	private ResourcePool(){}
 
-	public static ResourcePool getResourcePool(){
-		if(resourcePool == null){
-			resourcePool = new ResourcePool();
-		}
-		return resourcePool;
+	
+	
+	public ResourcePool() {
+		// TODO Auto-generated constructor stub
 	}
 
 
@@ -80,12 +78,9 @@ public class ResourcePool implements ResourceConnPool<Connection> {
 		System.out.println("Available Connection:"+sem.availablePermits());
 	}
 
-	public Connection createResource() throws SQLException{
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poolingtestdb?useSSL=false", "root", "root");
-		System.out.println("Creating Connection:"+sem.availablePermits());
-		return conn;
-	}
 
+	
+	public  abstract Connection createResource() throws SQLException;
 
 
 
