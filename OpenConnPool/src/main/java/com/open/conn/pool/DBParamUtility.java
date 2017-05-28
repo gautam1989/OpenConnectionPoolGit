@@ -45,11 +45,5 @@ public class DBParamUtility {
 	}
 	
 	
-	public static void main(String[] args) {
-		
-		DBParamUtility DBp =new DBParamUtility();
-		DBp.getDBParametersFromConfigFile();
-		
-	}
 	
 }

@@ -6,12 +6,12 @@ public class DBParamaters {
 	String userName;
 	String password;
 	String jdbcURL;
-	String numberOfConnectionsPerPartition;
+	String numberOfConnectionsPerExecutor;
 	
 	@Override
 	public String toString() {
 		return "DBParamaters [userName=" + userName + ", password=" + password + ", jdbcURL=" + jdbcURL
-				+ ", numberOfConnectionsPerPartition=" + numberOfConnectionsPerPartition + "]";
+				+ ", numberOfConnectionsPerPartition=" + numberOfConnectionsPerExecutor + "]";
 	}
 	
 	

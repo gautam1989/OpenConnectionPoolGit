@@ -5,7 +5,7 @@
 		"userName": "root",
 		"password": "root",
 		"jdbcURL": "jdbc:mysql://localhost:3306/poolingtestdb?useSSL=false",
-		"numberOfConnectionsPerPartition": "2"
+		"numberOfConnectionsPerExecutor": "2"
 	}
 ]
 
